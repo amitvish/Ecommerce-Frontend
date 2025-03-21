@@ -25,7 +25,7 @@ function App() {
 
   return (
     <>
-      <h1>🔥 Debug: App Loaded</h1> {/* Visible Debugging */}
+      <h1 style={{ textAlign: "center", margin: "20px 0" }}>User Management System</h1>
       {loading ? (
         <p>Loading users...</p>
       ) : (
