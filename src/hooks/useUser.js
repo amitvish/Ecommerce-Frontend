@@ -1,10 +1,12 @@
 import { useQuery } from "@tanstack/react-query";
-import { fetchUserById } from "../services/userService";
+import axios from "axios";
 
-export const useUser = (id) => {  // ✅ Ensure correct export name
+export const useUser = (id) => {
   return useQuery({
     queryKey: ["user", id],
-    queryFn: () => fetchUserById(id),
-    enabled: !!id, // Only fetch when ID is available
+    queryFn: async () => {
+      const response = await axios.get(`http://localhost:8081/api/users/${id}`);
+      return response.data;
+    },
   });
 };

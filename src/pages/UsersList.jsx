@@ -1,27 +1,27 @@
-import { useUsers } from "../hooks/useUsers";
-import UserCard from "../components/UserCard";
+import { useNavigate } from "react-router-dom";
 
-const UsersList = () => {
-  const { data: users, isLoading, error } = useUsers();
+const UsersList = ({ users = [] }) => {  // ✅ Ensure users has a default empty array
+  const navigate = useNavigate();
 
-  console.log("Users Data:", users); // ✅ Log data for debugging
-
-  if (isLoading) return <p>Loading users...</p>;
-  if (error) return <p>Error fetching users!</p>;
+  if (!users || users.length === 0) {
+    return <p>Loading users...</p>;  // ✅ Handle case when no users are available
+  }
 
   return (
-    <div className="p-4">
-      <h1 className="text-2xl font-bold">Users List</h1>
-
-      {users && users.length > 0 ? (
-        <div className="grid grid-cols-3 gap-4">
-          {users.map((user) => (
-            <UserCard key={user.id} user={user} />
-          ))}
+    <div>
+      {users.map((user) => (
+        <div key={user.id}>
+          <p>{user.firstName} {user.lastName}</p>
+          <button
+            onClick={() => {
+              console.log(`🔗 Navigating to: /users/${user.id}`);
+              navigate(`/users/${user.id}`);
+            }}
+          >
+            Go to Details
+          </button>
         </div>
-      ) : (
-        <p>No users found</p>
-      )}
+      ))}
     </div>
   );
 };

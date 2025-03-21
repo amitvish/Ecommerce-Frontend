@@ -1,29 +1,48 @@
-import { useParams, Link } from "react-router-dom";
-import { useUser } from "../hooks/useUser";
+import { useParams } from "react-router-dom";
+import { useEffect, useState } from "react";
+import axios from "axios";
 
 const UserDetails = () => {
-  const { id } = useParams();
-  const { data: user, isLoading, error } = useUser(id);
+  const { id } = useParams(); // Get user ID from the URL
+  console.log("🚀 UserDetails Loaded with ID:", id); // Debugging log
+  const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
-  if (isLoading) return <p>Loading user details...</p>;
-  if (error) return <p>Error fetching user details!</p>;
+  useEffect(() => {
+    axios
+      .get(`http://localhost:8081/api/users/${id}`)
+      .then((response) => {
+        setUser(response.data);
+        setLoading(false);
+      })
+      .catch((error) => {
+        console.error("Error fetching user data:", error);
+        setError("Failed to fetch user data.");
+        setLoading(false);
+      });
+  }, [id]);
+
+  if (loading) return <p>Loading user details...</p>;
+  if (error) return <p>{error}</p>;
 
   return (
-    <div className="p-6">
-      <Link to="/" className="text-blue-500">&larr; Back to Users List</Link>
-      <div className="flex items-center gap-6 mt-4">
-        <img src={user.image} alt={user.firstName} className="w-32 h-32 rounded-full" />
-        <div>
-          <h1 className="text-2xl font-bold">{user.firstName} {user.lastName}</h1>
-          <p>Email: {user.email}</p>
-          <p>Phone: {user.phone}</p>
-          <p>Age: {user.age}</p>
-          <p>Gender: {user.gender}</p>
-          <p>Company: {user.company.name}</p>
-        </div>
-      </div>
+    <div style={styles.container}>
+      <h2>{user.firstName} {user.lastName}</h2>
+      <img src={user.image} alt={`${user.firstName}`} style={styles.image} />
+      <p><strong>Age:</strong> {user.age}</p>
+      <p><strong>Gender:</strong> {user.gender}</p>
+      <p><strong>Email:</strong> {user.email}</p>
+      <p><strong>Phone:</strong> {user.phone}</p>
+      <p><strong>Birth Date:</strong> {user.birthDate}</p>
+      <p><strong>Role:</strong> {user.role}</p>
     </div>
   );
+};
+
+const styles = {
+  container: { padding: "20px", textAlign: "center" },
+  image: { width: "150px", borderRadius: "50%", margin: "10px 0" }
 };
 
 export default UserDetails;
