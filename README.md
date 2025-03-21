@@ -69,4 +69,12 @@ This generates an optimized `dist/` folder ready for deployment.
 - If the API requests fail, check if the backend server is running at the correct port.
 - Ensure you have installed dependencies using `npm install` before running the project.
 
+## Application Screenshots  
+### Home Page  
+![Home Page](src/assets/Home-Page.png)  
+
+### User Details Page  
+![User Details](src/assets/User-Page.png)  
+
+
 
