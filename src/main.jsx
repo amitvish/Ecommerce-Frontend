@@ -9,7 +9,7 @@ console.log("🚀 main.jsx loaded!"); // Debugging Log
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <QueryClientProvider client={queryClient}>
-    <BrowserRouter>
+    <BrowserRouter basename="/Ecommerce-Frontend">
       <App />
     </BrowserRouter>
   </QueryClientProvider>
